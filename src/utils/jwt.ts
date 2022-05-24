@@ -2,7 +2,7 @@ import JWT from 'jsonwebtoken';
 import config from '../config';
 
 var defaultPayload = {
-  iss: 'stuck',
+  iss: 'kashier',
   aud: 'users',
   iat: Math.floor(Date.now() / 1000) - 30,
 };
@@ -15,7 +15,7 @@ export const generateAccessToken = (userId: string, role: string) => {
     role: role,
   };
 
-  const expiry = { expiresIn: '48h' };
+  const expiry = { expiresIn: '7d' };
 
   return JWT.sign(payload, config.JWT_ACCESS_SECRET, expiry);
 };

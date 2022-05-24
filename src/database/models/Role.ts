@@ -27,7 +27,7 @@ export const RoleModel = (
   
 
   const Role = sequelize.define<RoleInstance, RoleAttributes>(
-    "Role",
+    "role",
     attributes,
   );
 

@@ -28,3 +28,5 @@ export interface tokenPair {
   accessToken: string;
   refreshToken: string;
 }
+
+export const userRoles = ["regular", "manager"];

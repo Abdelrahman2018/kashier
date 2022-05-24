@@ -14,39 +14,6 @@ export type SequelizeAttributes<T extends { [key: string]: any }> = {
   [P in keyof T]: SequelizeAttribute;
 };
 
-/**
- * Doctor
- */
-export interface DoctorAttributes {
-  id?: string;
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  password?: string;
-  verfication_code?: string;
-  avatar_url?: string;
-  is_approved?: boolean;
-  rating?: number;
-  status?: string;
-  b_date?: Date;
-  experience?: number;
-  speciality_id?: string;
-  description?: string;
-  created_at?: Date;
-  updated_at?: Date;
-  enable_video?: boolean;
-  enable_audio?: boolean;
-  visits?: number;
-  fcmToken?: string;
-  closed_questions?: number;
-  sortIndex?: number;
-  // specialities?: string[];
-}
-
-export interface DoctorInstance
-  extends Sequelize.Instance<DoctorAttributes>,
-    DoctorAttributes {}
-
 export interface GroupAttributes {
   id?: string;
   name?: string;

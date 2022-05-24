@@ -51,6 +51,8 @@ class GroupService {
 
       const newGroup: any = await this.GroupRepository.save(group);
 
+      // create groupe  roles
+
       return newGroup;
     } catch (error: any) {
       logger.error("GroupService: create:", error.message);
