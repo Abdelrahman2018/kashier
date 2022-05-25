@@ -1,5 +1,7 @@
 import JWT from 'jsonwebtoken';
 import config from '../config';
+import { JWTPayload } from '../types/general';
+import { RoleAttributes } from '../types/models';
 
 var defaultPayload = {
   iss: 'kashier',
@@ -7,12 +9,12 @@ var defaultPayload = {
   iat: Math.floor(Date.now() / 1000) - 30,
 };
 
-export const generateAccessToken = (userId: string, role: string) => {
+export const generateAccessToken = (userId: string, role: string | RoleAttributes[]) => {
   // payload == claims
   const payload = {
     ...defaultPayload,
     sub: userId,
-    role: role,
+    role,
   };
 
   const expiry = { expiresIn: '7d' };

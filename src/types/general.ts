@@ -1,3 +1,4 @@
+import { RoleAttributes } from "./models";
 
 export enum UserRole {
   regular = "regular",
@@ -30,3 +31,8 @@ export interface tokenPair {
 }
 
 export const userRoles = ["regular", "manager"];
+
+export interface JWTPayload {
+  role: string | RoleAttributes[];
+  groupIds?: string[];
+}

@@ -60,6 +60,7 @@ export const createCollection= async (
   const collectionServInstance = Container.get(CollectionService);
 
   try {
+    req.body.groupId = req.headers.groupId as string;
     const collection = await collectionServInstance.create(req.body);
 
     return res.status(201).json({

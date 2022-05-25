@@ -50,6 +50,8 @@ export interface UserAttributes {
   id?: string;
   email?: string;
   groupId?: string;
+  role?: string;
+  accessToken?: string;
 }
 
 export interface UserInstance
@@ -83,6 +85,7 @@ export interface IModels extends IObjectKeys {
   Item: Sequelize.Model<ItemInstance, ItemAttributes>;
   User: Sequelize.Model<UserInstance, UserAttributes>;
   UserGroup: Sequelize.Model<UserGroupInstance, UserGroupAttributes>;
+  Role: Sequelize.Model<RoleInstance, RoleAttributes>;
 }
 
 export type PaginationResult<I> = {

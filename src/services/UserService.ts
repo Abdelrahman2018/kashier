@@ -1,21 +1,25 @@
 import { Service } from "typedi";
+import {generateAccessToken} from "../utils/jwt";
 import {
   GroupRepository,
   UserRepository,
+  RoleRepository,
 } from "../database/repository";
-import { UserAttributes } from "../types/models";
+import { RoleAttributes, UserAttributes } from "../types/models";
 import {
   UnprocessableEntityError,
   ConflictError,
   NotFoundError,
 } from "../errors";
 import { logger } from "../lib";
+import { JWTPayload } from "../types/general";
 
 @Service()
 class UserService {
   constructor(
     private readonly UserRepository: UserRepository,
     private readonly GroupRepository: GroupRepository,
+    private readonly RoleRepository: RoleRepository,
   ) {}
 
   async exists(id: string) {
@@ -44,7 +48,8 @@ class UserService {
 
   async create(user: UserAttributes) {
     try {
-
+      let role: string | RoleAttributes[];
+      let token: string;
       const findArgs = { email: user?.email as string };
 
       const emailExists = await this.UserRepository.getOne(findArgs);
@@ -52,8 +57,23 @@ class UserService {
       if (emailExists) throw new ConflictError("Email already Exist!");
 
       const newUser: any = await this.UserRepository.save(user);
-      const group: any = await this.GroupRepository.getOne({id: user.groupId}, false);
-      await group.addUser(newUser);
+     
+      if (user.groupId) {
+        const group: any = await this.GroupRepository.getOne({ id: user.groupId }, false);
+        await group.addUser(newUser);
+        
+        const roleFindArgs = {
+          name: user.role,
+          groupId: user.groupId,
+        }
+        const groupRole = await this.RoleRepository.getOne(roleFindArgs);
+        role = [groupRole as RoleAttributes];
+      }else{
+        role = "globalManager";
+      }
+      // sign jwt token
+      token = generateAccessToken(newUser?.id as string, role);
+      newUser.dataValues.accessToken = token;
 
       return newUser;
     } catch (error: any) {

@@ -3,36 +3,44 @@ import { CreateCollectionDto } from "../../dto";
 import {
   paginateMiddleware as paginate,
   validateMiddleware as validate,
-  // isAdminMiddleware as isAdmin,
+  // isGlobalManagerMiddleware as isGlobalManager,
+  hasAccessMiddleware as hasAccess,
   authenticationMiddleware as isAuthenticated,
 } from "../middlewares";
 import { CollectionController } from "../controllers";
 
 const router = Router();
 
-router.get("/", paginate, CollectionController.findAll);
+router.get("/", 
+paginate,
+isAuthenticated, 
+hasAccess,
+CollectionController.findAll
+);
 
-router.get("/:id", CollectionController.getCollection);
+router.get("/:id",
+isAuthenticated, 
+hasAccess,
+CollectionController.getCollection
+);
 
 router.post("/", 
 validate(CreateCollectionDto), 
-// isAuthenticated,
-// isAdmin,
+isAuthenticated, 
+hasAccess,
 CollectionController.createCollection
 );
 
 router.put("/:id",
-// isAuthenticated,
-// isAdmin,
+isAuthenticated, 
+hasAccess,
 CollectionController.updateCollection
 );
 
 router.delete("/:id",
-// isAuthenticated,
-// isAdmin,
+isAuthenticated, 
+hasAccess,
 CollectionController.deleteCollection
 );
-
-
 
 export default router;

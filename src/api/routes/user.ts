@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { CreateUserDto } from "../../dto";
 import {
-  isDoctorMiddleware,
   paginateMiddleware as paginate,
   validateMiddleware as validate,
   // isAdminMiddleware as isAdmin,

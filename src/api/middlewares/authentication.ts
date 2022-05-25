@@ -26,6 +26,7 @@ export default function authorization(
     }
 
     const user = JWT.decode(token, { json: true });
+    console.log("user", user);
     if (!user) {
       console.log('no user');
       return sendError(res);
@@ -33,7 +34,9 @@ export default function authorization(
 
     //   success , inject user id and user type for the next middleware/controller
     req.headers.userId = user.sub;
-    req.headers.userType = user.role;
+    req.headers.role = user.role;
+
+    console.log('paras', req);
 
     // no error, ok .. to the next step 🚀🚀🚀
     return next();
