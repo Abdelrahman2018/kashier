@@ -8,18 +8,18 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-     await queryInterface.createTable('user_groups', {
+     await queryInterface.createTable('user_roles', {
       id: {
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      groupId: {
+      roleId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: {
-            tableName: 'groups',
+            tableName: 'roles',
             key: 'id'
           },
         },
@@ -36,17 +36,6 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      // roleId: {
-      //   type: Sequelize.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: {
-      //       tableName: 'roles',
-      //       key: 'id'
-      //     },
-      //   },
-      //   onDelete: 'CASCADE',
-      // }
     });
   },
 

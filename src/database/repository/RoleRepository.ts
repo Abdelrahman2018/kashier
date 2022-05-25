@@ -5,7 +5,7 @@ import { Sequelize } from 'sequelize'
 import 'reflect-metadata'
 
 export interface IRoleRepository {
-	getOne(findArgs: RoleAttributes): Promise<RoleAttributes | null>
+	getOne(findArgs: RoleAttributes, plain: boolean): Promise<RoleAttributes | null>
 	save(group: RoleInstance): Promise<RoleAttributes | null>
 }
 
@@ -45,13 +45,13 @@ export default class RoleRepository implements IRoleRepository {
 		}
 	}
 
-	async getOne(findArgs: RoleAttributes): Promise<RoleAttributes | null> {
+	async getOne(findArgs: RoleAttributes, plain: boolean): Promise<RoleAttributes | null> {
 		try {
 			const role = await this.Models.Role.findOne({
 				where: { ...findArgs }
 			})
 
-			return role ? role?.get({ plain: true }) : null
+      return role ? plain? role.get({ plain: true }) : role: null;
 		} catch (error: any) {
 			logger.error('RoleRepository: getOne', error.message)
 			throw error

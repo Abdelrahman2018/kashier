@@ -6,6 +6,7 @@ import { ItemModel } from "./Item";
 import { UserModel } from "./User";
 import { RoleModel } from "./Role";
 import { UserGroupModel } from "./UserGroup";
+import { UserRoleModel } from "./UserRole";
 export const createModels = (sequelize: Sequelize.Sequelize): IModels => {
   /**
    * Register models here
@@ -18,6 +19,7 @@ export const createModels = (sequelize: Sequelize.Sequelize): IModels => {
     User: UserModel(sequelize, Sequelize),
     Role: RoleModel(sequelize, Sequelize),
     UserGroup: UserGroupModel(sequelize, Sequelize),
+    UserRole: UserRoleModel(sequelize, Sequelize),
   };
 
   Object.keys(models).forEach((modelName) => {

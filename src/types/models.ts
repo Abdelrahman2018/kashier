@@ -1,5 +1,6 @@
 import sequelize, * as Sequelize from "sequelize";
 import { DataTypeAbstract, DefineAttributeColumnOptions } from "sequelize";
+import { Tracing } from "trace_events";
 import { IObjectKeys } from "./general";
 
 /**
@@ -51,6 +52,8 @@ export interface UserAttributes {
   email?: string;
   groupId?: string;
   role?: string;
+  newGroupId?: string;
+  prevRoles?: RoleAttributes[];
   accessToken?: string;
 }
 
@@ -64,6 +67,10 @@ export interface RoleAttributes {
   groupId?: string;
 }
 
+export interface RoleInstance
+  extends Sequelize.Instance<RoleAttributes>,
+  RoleAttributes {}
+
 
 export interface UserGroupAttributes {
   id?: string;
@@ -75,9 +82,18 @@ export interface UserGroupInstance
   extends Sequelize.Instance<UserGroupAttributes>,
   UserGroupAttributes {}
 
-export interface RoleInstance
-  extends Sequelize.Instance<RoleAttributes>,
-  RoleAttributes {}
+
+  export interface UserRoleAttributes {
+    id?: string;
+    userId?: string;
+    roleId?: string;
+  }
+  
+  export interface UserRoleInstance
+    extends Sequelize.Instance<UserRoleAttributes>,
+    UserRoleAttributes {}
+
+
 
 export interface IModels extends IObjectKeys {
   Group: Sequelize.Model<GroupInstance, GroupAttributes>;
@@ -86,6 +102,7 @@ export interface IModels extends IObjectKeys {
   User: Sequelize.Model<UserInstance, UserAttributes>;
   UserGroup: Sequelize.Model<UserGroupInstance, UserGroupAttributes>;
   Role: Sequelize.Model<RoleInstance, RoleAttributes>;
+  UserRole: Sequelize.Model<UserRoleInstance, UserRoleAttributes>;
 }
 
 export type PaginationResult<I> = {

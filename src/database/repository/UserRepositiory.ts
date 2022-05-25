@@ -66,7 +66,10 @@ export default class UserRepository implements IUserRepository {
 				where: { ...findArgs },
         include: [
           {
-            model: this.Models.Group
+            model: this.Models.Role,
+          },
+          {
+            model: this.Models.Group,
           }
         ]
 			})

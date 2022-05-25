@@ -10,33 +10,34 @@ import { UserController } from "../controllers";
 
 const router = Router();
 
-router.get("/:groupId/user", 
+router.get("/user", 
 isAuthenticated,
 paginate, 
 hasAccess,
 UserController.findAll
 );
 
-router.get("/:groupId/user/:id", 
+router.get("/user/:id", 
 isAuthenticated,
 hasAccess,
 UserController.getUser
 );
 
-router.post("/:groupId/user", 
+router.post("/user", 
 validate(CreateUserDto), 
 isAuthenticated,
 hasAccess,
 UserController.createUser
 );
 
-router.put("/:groupId/user/:id",
+
+router.put("/user/:id",
 isAuthenticated,
 hasAccess,
 UserController.updateUser
 );
 
-router.delete("/:groupId/user/:id",
+router.delete("/user/:id",
 isAuthenticated,
 hasAccess,
 UserController.deleteUser

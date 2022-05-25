@@ -36,6 +36,13 @@ export const UserModel = (
           timestamps: false,
           onDelete: 'cascade'
       });
+
+      User.belongsToMany(models.Role, {
+        through: 'user_roles',
+        timestamps: false,
+        onDelete: 'cascade'
+    });
+      
   }
 
   return User;

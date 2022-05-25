@@ -58,16 +58,14 @@ class UserService {
 
       const newUser: any = await this.UserRepository.save(user);
      
-      if (user.groupId) {
+      if (user.groupId && user.role !== "globalManager") {
         const group: any = await this.GroupRepository.getOne({ id: user.groupId }, false);
+        const roleGroup: any = await this.RoleRepository.getOne({name: user.role, groupId: user.groupId}, false);
         await group.addUser(newUser);
+        await newUser.addRole(roleGroup);
         
-        const roleFindArgs = {
-          name: user.role,
-          groupId: user.groupId,
-        }
-        const groupRole = await this.RoleRepository.getOne(roleFindArgs);
-        role = [groupRole as RoleAttributes];
+        const updatedUserWithRoles: any = await this.UserRepository.getOne({id: newUser.id})
+        role = updatedUserWithRoles.roles;
       }else{
         role = "globalManager";
       }
@@ -90,14 +88,20 @@ class UserService {
         throw new NotFoundError("User Not Exist");
       }
 
-      const updatedUser = await this.UserRepository.update(attributes, findArgs, false);
+      const updatedUser: any = await this.UserRepository.update(attributes, findArgs, false);
       if (!updatedUser) {
         throw new UnprocessableEntityError("User Not Updated");
       }
 
-      if(attributes.groupId){
+      if(attributes.groupId && attributes.role){
         const group: any = await this.GroupRepository.getOne({id: attributes.groupId}, false);
+        const roleGroup: any = await this.RoleRepository.getOne({name: attributes.role, groupId: attributes.groupId}, false);
         await group.addUser(updatedUser);
+        await updatedUser.addRole(roleGroup);
+        const DBUser: any = await this.UserRepository.getOne({id: updatedUser.id});
+    
+        const token = generateAccessToken(updatedUser.id as string, DBUser.roles);
+        updatedUser.dataValues.accessToken = token;
       }
       return updatedUser;
     } catch (error: any) {

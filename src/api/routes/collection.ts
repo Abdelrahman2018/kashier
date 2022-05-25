@@ -3,7 +3,6 @@ import { CreateCollectionDto } from "../../dto";
 import {
   paginateMiddleware as paginate,
   validateMiddleware as validate,
-  // isGlobalManagerMiddleware as isGlobalManager,
   hasAccessMiddleware as hasAccess,
   authenticationMiddleware as isAuthenticated,
 } from "../middlewares";
@@ -11,33 +10,33 @@ import { CollectionController } from "../controllers";
 
 const router = Router();
 
-router.get("/", 
+router.get("/:groupId/collection", 
 paginate,
 isAuthenticated, 
 hasAccess,
 CollectionController.findAll
 );
 
-router.get("/:id",
+router.get("/:groupId/collection/:id",
 isAuthenticated, 
 hasAccess,
 CollectionController.getCollection
 );
 
-router.post("/", 
+router.post("/:groupId/collection", 
 validate(CreateCollectionDto), 
 isAuthenticated, 
 hasAccess,
 CollectionController.createCollection
 );
 
-router.put("/:id",
+router.put("/:groupId/collection/:id",
 isAuthenticated, 
 hasAccess,
 CollectionController.updateCollection
 );
 
-router.delete("/:id",
+router.delete("/:groupId/collection/:id",
 isAuthenticated, 
 hasAccess,
 CollectionController.deleteCollection

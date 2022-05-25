@@ -33,6 +33,10 @@ export const RoleModel = (
 
   Role.associate = (models) => {
       Role.belongsTo(models.Group);
+      Role.belongsToMany(models.User, {
+        through: 'user_roles',
+        timestamps: false
+      })
   }
 
   return Role;

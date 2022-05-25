@@ -13,30 +13,41 @@ export default function authorization(
 ) {
   try {
     // console.log(req.headers.authorization);
-    if (!req.headers.authorization) {
+    if (!req.headers.authorization && !req.headers.userid) {
+      console.log("headers",req.headers)
       console.log('no auth header');
       return sendError(res);
     }
-
-    const token: string = req.headers.authorization as string;
-    const isValid = JWT.verify(token, config.JWT_ACCESS_SECRET as string);
-    if (!isValid) {
-      console.log('invalid token');
-      return sendError(res);
+    if(req.headers.authorization){
+      const token: string = req.headers.authorization as string;
+      const isValid = JWT.verify(token, config.JWT_ACCESS_SECRET as string);
+      if (!isValid) {
+        console.log('invalid token');
+        return sendError(res);
+      }
+  
+      const user = JWT.decode(token, { json: true });
+      console.log("user", user);
+      if (!user) {
+        console.log('no user');
+        return sendError(res);
+      }
+  
+      //   success , inject user id and user type for the next middleware/controller
+      req.headers.userId = user.sub;
+      req.headers.role = user.role;
+      req.body.groupId = req.params.groupId
+      req.body.collectionId = req.params.collectionId
     }
 
-    const user = JWT.decode(token, { json: true });
-    console.log("user", user);
-    if (!user) {
-      console.log('no user');
-      return sendError(res);
+    if(req.headers.userid){
+      req.headers.userId = req.headers.userid
     }
 
-    //   success , inject user id and user type for the next middleware/controller
-    req.headers.userId = user.sub;
-    req.headers.role = user.role;
+  
+    // req.body.prevRoles = user.role;
 
-    console.log('paras', req);
+    // console.log('paras', req.params);
 
     // no error, ok .. to the next step 🚀🚀🚀
     return next();

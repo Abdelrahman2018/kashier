@@ -3,33 +3,41 @@ import { CreateGroupDto } from "../../dto";
 import {
   paginateMiddleware as paginate,
   validateMiddleware as validate,
-  // isAdminMiddleware as isAdmin,
+  hasAccessMiddleware as hasAccess,
   authenticationMiddleware as isAuthenticated,
 } from "../middlewares";
 import { GroupController } from "../controllers";
 
 const router = Router();
 
-router.get("/", paginate, GroupController.findAll);
+router.get("/", 
+isAuthenticated,
+hasAccess,
+paginate, GroupController.findAll
+);
 
-router.get("/:id", GroupController.getGroup);
+router.get("/:id", 
+isAuthenticated,
+hasAccess,
+GroupController.getGroup
+);
 
 router.post("/", 
 validate(CreateGroupDto), 
-// isAuthenticated,
-// isAdmin,
+isAuthenticated,
+hasAccess,
 GroupController.createGroup
 );
 
 router.put("/:id",
-// isAuthenticated,
-// isAdmin,
+isAuthenticated,
+hasAccess,
 GroupController.updateGroup
 );
 
 router.delete("/:id",
-// isAuthenticated,
-// isAdmin,
+isAuthenticated,
+hasAccess,
 GroupController.deleteGroup
 );
 

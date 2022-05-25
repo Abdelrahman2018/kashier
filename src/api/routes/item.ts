@@ -3,33 +3,42 @@ import { CreateItemDto } from "../../dto";
 import {
   paginateMiddleware as paginate,
   validateMiddleware as validate,
-  // isAdminMiddleware as isAdmin,
+  isGroupManagerMiddleware as hasAccess,
   authenticationMiddleware as isAuthenticated,
 } from "../middlewares";
 import { ItemController } from "../controllers";
 
 const router = Router();
 
-router.get("/", paginate, ItemController.findAll);
+router.get("/:groupId/collection/:collectionId/item/",
+ paginate, 
+ isAuthenticated,
+ hasAccess,
+ ItemController.findAll
+ );
 
-router.get("/:id", ItemController.getItem);
+router.get("/:groupId/collection/:collectionId/item/:id",
+isAuthenticated,
+ hasAccess,
+ ItemController.getItem
+);
 
-router.post("/", 
+router.post("/:groupId/collection/:collectionId/item", 
 validate(CreateItemDto), 
-// isAuthenticated,
-// isAdmin,
+isAuthenticated,
+hasAccess,
 ItemController.createItem
 );
 
-router.put("/:id",
-// isAuthenticated,
-// isAdmin,
+router.put("/:groupId/collection/:collectionId/item/:id",
+isAuthenticated,
+ hasAccess,
 ItemController.updateItem
 );
 
-router.delete("/:id",
-// isAuthenticated,
-// isAdmin,
+router.delete("/:groupId/collection/:collectionId/item/:id",
+isAuthenticated,
+ hasAccess,
 ItemController.deleteItem
 );
 
