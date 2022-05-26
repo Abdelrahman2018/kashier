@@ -64,11 +64,11 @@ export default class GroupRepository implements IGroupRepository {
 		try {
 			const group = await this.Models.Group.findOne({
 				where: { ...findArgs },
-        include: [
-          {
-            model: this.Models.Collection
-          }
-        ]
+				include: [
+					{
+						model: this.Models.Collection
+					}
+				],
 			})
 
       // return group;

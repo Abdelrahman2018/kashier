@@ -3,7 +3,7 @@ import { CreateItemDto } from "../../dto";
 import {
   paginateMiddleware as paginate,
   validateMiddleware as validate,
-  isGroupManagerMiddleware as hasAccess,
+  hasAccessMiddleware as hasAccess,
   authenticationMiddleware as isAuthenticated,
 } from "../middlewares";
 import { ItemController } from "../controllers";
