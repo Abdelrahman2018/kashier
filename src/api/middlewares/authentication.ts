@@ -44,10 +44,6 @@ export default function authorization(
       req.headers.userId = req.headers.userid
     }
 
-  
-    // req.body.prevRoles = user.role;
-
-    // console.log('paras', req.params);
 
     // no error, ok .. to the next step 🚀🚀🚀
     return next();
